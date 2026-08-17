@@ -1,4 +1,4 @@
-import GetStartedPage from '../../pages/OrganizationSetup/GetStartedPage';
+import GetstartedPage from '../../pages/OrganizationSetup/GetstartedPage';
 import CreateorgProfile from '../../pages/OrganizationSetup/CreateorgProfile';
 import PromocodePage from '../../pages/OrganizationSetup/PromocodePage';
 import PaymentPage from '../../pages/OrganizationSetup/PaymentPage';
@@ -33,16 +33,16 @@ describe('Organization Setup - E2E Flow', () => {
     // GET STARTED
     // =====================================================
 
-    GetStartedPage
+    GetstartedPage
       .clickGetStartedBtn();
 
-    GetStartedPage
+    GetstartedPage
       .clickFirstCheckbox();
 
-    GetStartedPage
+    GetstartedPage
       .clickSecondCheckbox();
 
-    GetStartedPage
+    GetstartedPage
       .clickNextButton();
 
 

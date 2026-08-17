@@ -1,4 +1,4 @@
-import GetStartedPage from '../../pages/OrganizationSetup/GetStartedPage';
+import GetStartedPage from '../../pages/OrganizationSetup/GetstartedPage';
 import CreateorgProfile from '../../pages/OrganizationSetup/CreateorgProfile';
 
 import {
