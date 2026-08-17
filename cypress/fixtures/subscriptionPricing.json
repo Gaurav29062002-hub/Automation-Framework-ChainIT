@@ -1,0 +1,14 @@
+{
+  "essential": {
+    "setupFee": "$125.00",
+    "subscription": "$100.00"
+  },
+  "advanced": {
+    "setupFee": "$100.00",
+    "subscription": "$500.00"
+  },
+  "enterprise": {
+    "setupFee": "$75.00",
+    "subscription": "$1000.00"
+  }
+}

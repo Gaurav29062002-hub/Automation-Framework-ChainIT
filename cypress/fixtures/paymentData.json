@@ -1,0 +1,8 @@
+{
+  "cardholderName": "Test User",
+  "cardNumber": "4242 4242 4242 4242",
+  "expiryMonth": "08",
+  "expiryYear": "26",
+  "cvv": "123",
+  "zipCode": "90001"
+}
