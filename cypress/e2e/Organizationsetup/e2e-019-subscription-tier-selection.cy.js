@@ -1,4 +1,4 @@
-import GetStartedPage from '../../pages/OrganizationSetup/GetStartedPage';
+import GetStartedPage from '../../pages/OrganizationSetup/GetstartedPage';
 import CreateorgProfile from '../../pages/OrganizationSetup/CreateorgProfile';
 import PromocodePage from '../../pages/OrganizationSetup/PromocodePage';
 import PaymentPage from '../../pages/OrganizationSetup/PaymentPage';
@@ -176,59 +176,51 @@ describe(
 
 
         // =====================================================
-        // VERIFY PAYMENT PAGE
+        // VERIFY ESSENTIAL
         // =====================================================
 
         PaymentPage
-          .selectEssentialTier();
+            .selectEssentialTier();
+
+        PaymentPage
+            .verifyEssentialTierSelected();
+
+        PaymentPage
+            .verifyOnlyOneTierSelected();
 
 
         // =====================================================
-// VERIFY ESSENTIAL
-// =====================================================
+        // SWITCH TO ENTERPRISE
+        // =====================================================
 
-PaymentPage
-  .selectEssentialTier();
+        PaymentPage
+            .selectEnterpriseTier();
 
-PaymentPage
-  .verifyEssentialTierSelected();
+        PaymentPage
+            .verifyEnterpriseTierSelected();
 
-PaymentPage
-  .verifyOnlyOneTierSelected();
+        PaymentPage
+            .verifyOnlyOneTierSelected();
 
-
-// =====================================================
-// SWITCH TO ENTERPRISE
-// =====================================================
-
-PaymentPage
-  .selectEnterpriseTier();
-
-PaymentPage
-  .verifyEnterpriseTierSelected();
-
-PaymentPage
-  .verifyOnlyOneTierSelected();
-
-PaymentPage
-  .verifyTierNotSelected('Essential');
+        PaymentPage
+            .verifyTierNotSelected('Essential');
 
 
-// =====================================================
-// SWITCH TO ADVANCED
-// =====================================================
+        // =====================================================
+        // SWITCH TO ADVANCED
+        // =====================================================
 
-PaymentPage
-  .selectAdvancedTier();
+        PaymentPage
+            .selectAdvancedTier();
 
-PaymentPage
-  .verifyAdvancedTierSelected();
+        PaymentPage
+            .verifyAdvancedTierSelected();
 
-PaymentPage
-  .verifyOnlyOneTierSelected();
+        PaymentPage
+            .verifyOnlyOneTierSelected();
 
-PaymentPage
-  .verifyTierNotSelected('Enterprise');
+        PaymentPage
+            .verifyTierNotSelected('Enterprise');
 
       }
     );
