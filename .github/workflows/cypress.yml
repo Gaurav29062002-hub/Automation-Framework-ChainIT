@@ -69,6 +69,59 @@ jobs:
           name: cypress-mochawesome-report
           path: cypress/reports
           if-no-files-found: warn
+      
+                # ==========================================
+      # SEND TEST REPORT BY EMAIL
+      # ==========================================
+
+      - name: Send Cypress Report Email
+        if: always()
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+
+          subject: "ChainIT Cypress E2E Test Report - ${{ job.status }}"
+
+          to: ${{ secrets.MAIL_TO }}
+          from: "ChainIT Automation <${{ secrets.MAIL_USERNAME }}>"
+          
+          body: |
+            Hello,
+
+            The ChainIT Cypress E2E test execution has completed.
+
+            Repository:
+            ${{ github.repository }}
+
+            Branch:
+            ${{ github.ref_name }}
+
+            Status:
+            ${{ job.status }}
+
+            Workflow:
+            ${{ github.workflow }}
+
+            Run:
+            #${{ github.run_number }}
+
+            Commit:
+            ${{ github.sha }}
+
+            The Mochawesome HTML report is attached to this email.
+
+            You can also view the complete GitHub Actions run here:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Regards,
+            ChainIT Automation
+
+          attachments: cypress/reports/index.html
 
 
       # ==========================================
