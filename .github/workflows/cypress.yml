@@ -15,6 +15,10 @@ on:
 
   workflow_dispatch:
 
+  schedule:
+    - cron: '0 10 * * *'
+      timezone: 'Asia/Kolkata'
+
 jobs:
   cypress:
     name: Run Cypress E2E Tests
@@ -55,7 +59,13 @@ jobs:
       # ==========================================
 
       - name: Run Cypress E2E tests
-        run: npm run cypress:run
+        uses: cypress-io/github-action@v7
+        with:
+          install: false
+          command: npm run cypress:run
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
 
       # ==========================================
@@ -69,8 +79,9 @@ jobs:
           name: cypress-mochawesome-report
           path: cypress/reports
           if-no-files-found: warn
-      
-                # ==========================================
+
+
+      # ==========================================
       # SEND TEST REPORT BY EMAIL
       # ==========================================
 
@@ -89,7 +100,7 @@ jobs:
 
           to: ${{ secrets.MAIL_TO }}
           from: "ChainIT Automation <${{ secrets.MAIL_USERNAME }}>"
-          
+
           body: |
             Hello,
 

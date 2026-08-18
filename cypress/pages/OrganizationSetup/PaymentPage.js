@@ -30,6 +30,21 @@ class PaymentPage {
 
 
   // =========================================================
+  // PRICING LOCATORS
+  // =========================================================
+
+  get setupFeeSection() {
+    return cy.contains('h5', 'Setup Fee:')
+      .parent();
+  }
+
+  get yourOrderSection() {
+    return cy.contains('h3', 'Your Order')
+      .parent();
+  }
+
+
+  // =========================================================
   // SUBSCRIPTION
   // =========================================================
 
@@ -64,6 +79,71 @@ class PaymentPage {
 
 
   // =========================================================
+  // SUBSCRIPTION TIER VERIFICATION
+  // =========================================================
+
+  getTierRadio(tierName) {
+
+    return cy.contains(
+      'label',
+      tierName
+    )
+      .closest(
+        'div.flex.items-start.justify-between'
+      )
+      .find(
+        'input[type="radio"]'
+      );
+  }
+
+
+  verifyEssentialTierSelected() {
+
+    this.getTierRadio('Essential')
+      .should('be.checked');
+
+    return this;
+  }
+
+
+  verifyEnterpriseTierSelected() {
+
+    this.getTierRadio('Enterprise')
+      .should('be.checked');
+
+    return this;
+  }
+
+
+  verifyAdvancedTierSelected() {
+
+    this.getTierRadio('Advanced')
+      .should('be.checked');
+
+    return this;
+  }
+
+
+  verifyTierNotSelected(tierName) {
+
+    this.getTierRadio(tierName)
+      .should('not.be.checked');
+
+    return this;
+  }
+
+
+  verifyOnlyOneTierSelected() {
+
+    cy.get('input[type="radio"]')
+      .filter(':checked')
+      .should('have.length', 1);
+
+    return this;
+  }
+
+
+  // =========================================================
   // CHECKBOXES
   // =========================================================
 
@@ -88,29 +168,20 @@ class PaymentPage {
 
 
   // =========================================================
-  // PRICING LOCATORS
-  // =========================================================
-
-  get setupFeeSection() {
-
-    return cy.contains(
-      'h5',
-      'Setup Fee:'
-    )
-      .parent()
-      .parent();
-  }
-
-
-  // =========================================================
   // PRICING VERIFICATION
   // =========================================================
 
   verifySetupFee(expectedSetupFee) {
 
-    this.setupFeeSection
+    cy.contains(
+      'h5',
+      'Setup Fee:'
+    )
       .should('be.visible')
-      .and(
+      .closest(
+        'div.flex.items-start.justify-between'
+      )
+      .should(
         'contain.text',
         expectedSetupFee
       );
@@ -119,9 +190,7 @@ class PaymentPage {
   }
 
 
-  verifySubscriptionAmount(
-    expectedSubscription
-  ) {
+  verifySubscriptionAmount(expectedSubscription) {
 
     cy.contains(
       'Subscription - First Month'
@@ -137,14 +206,9 @@ class PaymentPage {
   }
 
 
-  // =========================================================
-  // SALES TAX
-  // =========================================================
-
   verifySalesTax(expectedSalesTax) {
 
     cy.contains(
-      'span',
       'Sales Tax'
     )
       .should('be.visible')
@@ -158,14 +222,9 @@ class PaymentPage {
   }
 
 
-  // =========================================================
-  // TOTAL DUE TODAY
-  // =========================================================
-
   verifyTotalDueToday(expectedTotal) {
 
     cy.contains(
-      'span',
       'Total Due Today'
     )
       .should('be.visible')
@@ -179,285 +238,28 @@ class PaymentPage {
   }
 
 
-  // =========================================================
-  // TAX API
-  // =========================================================
-
-  waitForTaxCalculation() {
-
-    return cy.wait(
-      '@calculateTax',
-      {
-        timeout: 30000
-      }
-    );
-  }
-
-
-  // =========================================================
-  // CONVERT API CENTS TO UI CURRENCY
-  // =========================================================
-
-  convertCentsToCurrency(cents) {
-
-    const amount =
-      Number(cents) / 100;
-
-    return `$${amount.toFixed(2)}`;
-  }
-
-
-  // =========================================================
-  // VERIFY TAX FROM API
-  // =========================================================
-
-  verifySalesTaxFromApi() {
-
-    return this.waitForTaxCalculation()
-      .then((interception) => {
-
-        expect(
-          interception.response,
-          'Tax API response'
-        ).to.exist;
-
-        const response =
-          interception.response.body;
-
-        expect(
-          response,
-          'Tax API response body'
-        ).to.have.property(
-          'taxAmountToCollect'
-        );
-
-        const taxInCents =
-          Number(
-            response.taxAmountToCollect
-          );
-
-        expect(
-          taxInCents,
-          'Tax amount returned by API'
-        ).to.be.a('number');
-
-        const expectedSalesTax =
-          this.convertCentsToCurrency(
-            taxInCents
-          );
-
-        cy.log(
-          `Tax API amount: ${taxInCents} cents`
-        );
-
-        cy.log(
-          `Expected Sales Tax: ${expectedSalesTax}`
-        );
-
-        cy.contains(
-          'span',
-          'Sales Tax'
-        )
-          .should('be.visible')
-          .parent()
-          .should(
-            'contain.text',
-            expectedSalesTax
-          );
-
-        return cy.wrap(
-          expectedSalesTax
-        );
-
-      });
-  }
-
-
-  // =========================================================
-  // GET DISPLAYED PRICE
-  // =========================================================
-
-  getDisplayedAmount(
-    labelText
-  ) {
-
-    return cy.contains(
-      'span',
-      labelText
-    )
-      .should('be.visible')
-      .parent()
-      .find('span')
-      .last()
-      .invoke('text')
-      .then((text) => {
-
-        const cleanedText =
-          text
-            .trim()
-            .replace('$', '')
-            .replace(/,/g, '');
-
-        const amount =
-          Number(cleanedText);
-
-        expect(
-          amount,
-          `${labelText} displayed amount`
-        ).to.not.be.NaN;
-
-        return amount;
-
-      });
-  }
-
-
-  // =========================================================
-  // VERIFY TOTAL USING API TAX
-  // =========================================================
-
-  verifyTotalCalculation(
-    expectedSetupFee,
-    expectedSubscription,
-    taxInCents
-  ) {
-
-    const setupFee =
-      Number(
-        expectedSetupFee
-          .replace('$', '')
-          .replace(/,/g, '')
-      );
-
-    const subscription =
-      Number(
-        expectedSubscription
-          .replace('$', '')
-          .replace(/,/g, '')
-      );
-
-    const salesTax =
-      Number(taxInCents) / 100;
-
-    const expectedTotal =
-      setupFee +
-      subscription +
-      salesTax;
-
-    const formattedExpectedTotal =
-      `$${expectedTotal.toFixed(2)}`;
-
-    cy.log(
-      `Setup Fee: $${setupFee.toFixed(2)}`
-    );
-
-    cy.log(
-      `Subscription: $${subscription.toFixed(2)}`
-    );
-
-    cy.log(
-      `Sales Tax: $${salesTax.toFixed(2)}`
-    );
-
-    cy.log(
-      `Expected Total: ${formattedExpectedTotal}`
-    );
-
-    cy.contains(
-      'span',
-      'Total Due Today'
-    )
-      .should('be.visible')
-      .parent()
-      .should(
-        'contain.text',
-        formattedExpectedTotal
-      );
-
-    return this;
-  }
-
-
-  // =========================================================
-  // COMPLETE DYNAMIC PRICING VALIDATION
-  // =========================================================
-
   verifyTierPricing({
     setupFee,
-    subscription
+    subscription,
+    salesTax,
+    total
   }) {
 
-    // ---------------------------------------------
-    // Fixed pricing
-    // ---------------------------------------------
-
-    this.verifySetupFee(
-      setupFee
-    );
+    this.verifySetupFee(setupFee);
 
     this.verifySubscriptionAmount(
       subscription
     );
 
+    this.verifySalesTax(
+      salesTax
+    );
 
-    // ---------------------------------------------
-    // Dynamic tax + total
-    // ---------------------------------------------
+    this.verifyTotalDueToday(
+      total
+    );
 
-    return this.waitForTaxCalculation()
-      .then((interception) => {
-
-        expect(
-          interception.response,
-          'Tax API response'
-        ).to.exist;
-
-        const response =
-          interception.response.body;
-
-        const taxInCents =
-          Number(
-            response.taxAmountToCollect
-          );
-
-        const expectedSalesTax =
-          this.convertCentsToCurrency(
-            taxInCents
-          );
-
-        cy.log(
-          `Tax API Response: ${JSON.stringify(response)}`
-        );
-
-        cy.log(
-          `Sales Tax: ${expectedSalesTax}`
-        );
-
-        // -----------------------------------------
-        // Verify Sales Tax
-        // -----------------------------------------
-
-        this.verifySalesTax(
-          expectedSalesTax
-        );
-
-
-        // -----------------------------------------
-        // Verify Total
-        // -----------------------------------------
-
-        this.verifyTotalCalculation(
-          setupFee,
-          subscription,
-          taxInCents
-        );
-
-      })
-      .then(() => {
-
-        return this;
-
-      });
+    return this;
   }
 
 
@@ -724,6 +526,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
+      .should('be.visible')
       .should(($iframe) => {
 
         const iframeDocument =
@@ -777,6 +580,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
+      .should('visible')
       .should(($iframe) => {
 
         const iframeDocument =
@@ -831,6 +635,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
+      .should('be.visible')
       .should(($iframe) => {
 
         const iframeDocument =
@@ -885,6 +690,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
+      .should('visible')
       .should(($iframe) => {
 
         const iframeDocument =
