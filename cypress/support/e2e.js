@@ -1,10 +1,15 @@
+import 'cypress-mochawesome-reporter/register';
+
+
 beforeEach(() => {
   cy.log('Test started');
 });
 
+
 afterEach(() => {
   cy.log('Test finished');
 });
+
 
 Cypress.on('uncaught:exception', (err) => {
 

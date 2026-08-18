@@ -34,7 +34,35 @@ module.exports = defineConfig({
       openMode: 0,
     },
 
+    // =====================================================
+    // MOCHAWESOME REPORTER
+    // =====================================================
+
+    reporter: 'cypress-mochawesome-reporter',
+
+    reporterOptions: {
+      reportDir: 'cypress/reports',
+      overwrite: false,
+      html: true,
+      json: true,
+      charts: true,
+      embeddedScreenshots: true,
+      inlineAssets: true,
+      saveAllAttempts: false,
+    },
+
     setupNodeEvents(on, config) {
+
+      // ===================================================
+      // MOCHAWESOME REPORTER
+      // ===================================================
+
+      require('cypress-mochawesome-reporter/plugin')(on);
+
+
+      // ===================================================
+      // EXISTING VIDEO HANDLING
+      // ===================================================
 
       on('after:spec', (spec, results) => {
 

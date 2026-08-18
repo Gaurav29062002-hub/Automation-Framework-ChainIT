@@ -14,6 +14,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
-    "cypress": "^15.20.1"
+    "cypress": "^15.20.1",
+    "cypress-mochawesome-reporter": "^3.8.4"
   }
 }
