@@ -59,6 +59,19 @@ jobs:
 
 
       # ==========================================
+      # UPLOAD MOCHAWESOME REPORT
+      # ==========================================
+
+      - name: Upload Cypress Mochawesome Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-mochawesome-report
+          path: cypress/reports
+          if-no-files-found: warn
+
+
+      # ==========================================
       # UPLOAD SCREENSHOTS
       # ==========================================
 
