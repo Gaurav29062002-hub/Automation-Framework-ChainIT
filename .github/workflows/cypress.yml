@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '15 09 * * *'
       timezone: 'Asia/Kolkata'
 
 jobs:
