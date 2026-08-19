@@ -580,7 +580,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
-      .should('visible')
+      .should('be.visible')
       .should(($iframe) => {
 
         const iframeDocument =
@@ -690,7 +690,7 @@ class PaymentPage {
       timeout: 30000
     })
       .should('exist')
-      .should('visible')
+      .should('be.visible')
       .should(($iframe) => {
 
         const iframeDocument =
