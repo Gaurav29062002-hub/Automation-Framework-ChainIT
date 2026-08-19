@@ -35,206 +35,17 @@ describe(
 
 
     // =====================================================
-    // COMMON ORGANIZATION FLOW
-    // =====================================================
-
-    function navigateToPaymentPage() {
-
-      // ===================================================
-      // GET STARTED
-      // ===================================================
-
-      GetStartedPage
-        .clickGetStartedBtn();
-
-      GetStartedPage
-        .clickFirstCheckbox();
-
-      GetStartedPage
-        .clickSecondCheckbox();
-
-      GetStartedPage
-        .clickNextButton();
-
-
-      // ===================================================
-      // GENERATE RANDOM DATA
-      // ===================================================
-
-      const organizationName =
-        generateRandomOrgName();
-
-      const website =
-        generateRandomWebsite();
-
-      const taxId =
-        generateRandomTaxId();
-
-      const address =
-        generateRandomAddress();
-
-      const city =
-        generateRandomCity();
-
-      const organizationEmail =
-        generateRandomEmail();
-
-
-      // ===================================================
-      // RANDOM STATE
-      // ===================================================
-
-      const randomState =
-        generateRandomState();
-
-
-      // ===================================================
-      // ZIP CODE
-      // ===================================================
-
-      const randomZipCode =
-        generateZipCodeForState(
-          randomState
-        );
-
-
-      // ===================================================
-      // RANDOM INDUSTRY
-      // ===================================================
-
-      const randomIndustry =
-        generateRandomIndustry();
-
-
-      // ===================================================
-      // LOG TEST DATA
-      // ===================================================
-
-      cy.log(
-        `Organization: ${organizationName}`
-      );
-
-      cy.log(
-        `Formation State: ${randomState}`
-      );
-
-      cy.log(
-        `State: ${randomState}`
-      );
-
-      cy.log(
-        `ZIP Code: ${randomZipCode}`
-      );
-
-      cy.log(
-        `Industry: ${randomIndustry}`
-      );
-
-      cy.log(
-        `Organization Email: ${organizationEmail}`
-      );
-
-
-      // ===================================================
-      // ORGANIZATION PROFILE
-      // ===================================================
-
-      CreateorgProfile
-        .verifyPageLoaded();
-
-      CreateorgProfile
-        .enterOrgName(
-          organizationName
-        );
-
-
-      CreateorgProfile
-        .selectFormationStateOption(
-          randomState
-        );
-
-
-      CreateorgProfile
-        .selectIndustryOption(
-          randomIndustry
-        );
-
-
-      CreateorgProfile
-        .enterWebsite(
-          website
-        );
-
-
-      CreateorgProfile
-        .enterTaxIdNumber(
-          taxId
-        );
-
-
-      CreateorgProfile
-        .enterOrgNameAddress(
-          address
-        );
-
-
-      CreateorgProfile
-        .enterCity(
-          city
-        );
-
-
-      CreateorgProfile
-        .selectStateOption(
-          randomState
-        );
-
-
-      CreateorgProfile
-        .enterPostalCode(
-          randomZipCode
-        );
-
-
-      CreateorgProfile
-        .enterOrgEmailAddress(
-          organizationEmail
-        );
-
-
-      // ===================================================
-      // NON-SOLE USER
-      // ===================================================
-
-      CreateorgProfile
-        .clickNonSoleUserRadiobtn();
-
-      CreateorgProfile
-        .clickUserNextButton();
-
-
-      // ===================================================
-      // PROMO CODE
-      // ===================================================
-
-      PromocodePage
-        .clickContinuewithoutPromoBtn();
-
-    }
-
-
-    // =====================================================
     // E2E-018-01
-    // ESSENTIAL
+    // ESSENTIAL + NON-SOLE USER
     // =====================================================
 
     it(
-      'E2E-018-01 - Verify Essential subscription pricing and dynamic sales tax',
+      'E2E-018-01 - Verify Essential subscription pricing and dynamic sales tax - Non-Sole User',
       () => {
 
-        // -----------------------------------------------
-        // Register tax API BEFORE selecting tier
-        // -----------------------------------------------
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
 
         cy.intercept(
           'POST',
@@ -242,24 +53,174 @@ describe(
         ).as('calculateTax');
 
 
-        // -----------------------------------------------
-        // Navigate to Payment page
-        // -----------------------------------------------
+        // =================================================
+        // GET STARTED
+        // =================================================
 
-        navigateToPaymentPage();
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
 
 
-        // -----------------------------------------------
-        // Select Essential
-        // -----------------------------------------------
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // NON-SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickNonSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ESSENTIAL
+        // =================================================
 
         PaymentPage
           .selectEssentialTier();
 
 
-        // -----------------------------------------------
-        // Select required checkboxes
-        // -----------------------------------------------
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
 
         PaymentPage
           .selectFirstCheckbox();
@@ -268,9 +229,9 @@ describe(
           .selectSecondCheckbox();
 
 
-        // -----------------------------------------------
-        // Verify pricing
-        // -----------------------------------------------
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
 
         PaymentPage
           .verifyTierPricing({
@@ -287,16 +248,16 @@ describe(
 
     // =====================================================
     // E2E-018-02
-    // ADVANCED
+    // ADVANCED + NON-SOLE USER
     // =====================================================
 
     it(
-      'E2E-018-02 - Verify Advanced subscription pricing and dynamic sales tax',
+      'E2E-018-02 - Verify Advanced subscription pricing and dynamic sales tax - Non-Sole User',
       () => {
 
-        // -----------------------------------------------
-        // Register tax API
-        // -----------------------------------------------
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
 
         cy.intercept(
           'POST',
@@ -304,24 +265,174 @@ describe(
         ).as('calculateTax');
 
 
-        // -----------------------------------------------
-        // Navigate to Payment page
-        // -----------------------------------------------
+        // =================================================
+        // GET STARTED
+        // =================================================
 
-        navigateToPaymentPage();
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
 
 
-        // -----------------------------------------------
-        // Select Advanced
-        // -----------------------------------------------
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // NON-SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickNonSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ADVANCED
+        // =================================================
 
         PaymentPage
           .selectAdvancedTier();
 
 
-        // -----------------------------------------------
-        // Select required checkboxes
-        // -----------------------------------------------
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
 
         PaymentPage
           .selectFirstCheckbox();
@@ -330,9 +441,9 @@ describe(
           .selectSecondCheckbox();
 
 
-        // -----------------------------------------------
-        // Verify pricing
-        // -----------------------------------------------
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
 
         PaymentPage
           .verifyTierPricing({
@@ -349,16 +460,16 @@ describe(
 
     // =====================================================
     // E2E-018-03
-    // ENTERPRISE
+    // ENTERPRISE + NON-SOLE USER
     // =====================================================
 
     it(
-      'E2E-018-03 - Verify Enterprise subscription pricing and dynamic sales tax',
+      'E2E-018-03 - Verify Enterprise subscription pricing and dynamic sales tax - Non-Sole User',
       () => {
 
-        // -----------------------------------------------
-        // Register tax API
-        // -----------------------------------------------
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
 
         cy.intercept(
           'POST',
@@ -366,24 +477,174 @@ describe(
         ).as('calculateTax');
 
 
-        // -----------------------------------------------
-        // Navigate to Payment page
-        // -----------------------------------------------
+        // =================================================
+        // GET STARTED
+        // =================================================
 
-        navigateToPaymentPage();
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
 
 
-        // -----------------------------------------------
-        // Select Enterprise
-        // -----------------------------------------------
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // NON-SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickNonSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ENTERPRISE
+        // =================================================
 
         PaymentPage
           .selectEnterpriseTier();
 
 
-        // -----------------------------------------------
-        // Select required checkboxes
-        // -----------------------------------------------
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
 
         PaymentPage
           .selectFirstCheckbox();
@@ -392,9 +653,645 @@ describe(
           .selectSecondCheckbox();
 
 
-        // -----------------------------------------------
-        // Verify pricing
-        // -----------------------------------------------
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
+
+        PaymentPage
+          .verifyTierPricing({
+            setupFee:
+              subscriptionPricing.enterprise.setupFee,
+
+            subscription:
+              subscriptionPricing.enterprise.subscription
+          });
+
+      }
+    );
+
+
+    // =====================================================
+    // E2E-018-04
+    // ESSENTIAL + SOLE USER
+    // =====================================================
+
+    it(
+      'E2E-018-04 - Verify Essential subscription pricing and dynamic sales tax - Sole User',
+      () => {
+
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
+
+        cy.intercept(
+          'POST',
+          '**/tax/v2/calculate-ephemeral-tax'
+        ).as('calculateTax');
+
+
+        // =================================================
+        // GET STARTED
+        // =================================================
+
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
+
+
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ESSENTIAL
+        // =================================================
+
+        PaymentPage
+          .selectEssentialTier();
+
+
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
+
+        PaymentPage
+          .selectFirstCheckbox();
+
+        PaymentPage
+          .selectSecondCheckbox();
+
+
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
+
+        PaymentPage
+          .verifyTierPricing({
+            setupFee:
+              subscriptionPricing.essential.setupFee,
+
+            subscription:
+              subscriptionPricing.essential.subscription
+          });
+
+      }
+    );
+
+
+    // =====================================================
+    // E2E-018-05
+    // ADVANCED + SOLE USER
+    // =====================================================
+
+    it(
+      'E2E-018-05 - Verify Advanced subscription pricing and dynamic sales tax - Sole User',
+      () => {
+
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
+
+        cy.intercept(
+          'POST',
+          '**/tax/v2/calculate-ephemeral-tax'
+        ).as('calculateTax');
+
+
+        // =================================================
+        // GET STARTED
+        // =================================================
+
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
+
+
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ADVANCED
+        // =================================================
+
+        PaymentPage
+          .selectAdvancedTier();
+
+
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
+
+        PaymentPage
+          .selectFirstCheckbox();
+
+        PaymentPage
+          .selectSecondCheckbox();
+
+
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
+
+        PaymentPage
+          .verifyTierPricing({
+            setupFee:
+              subscriptionPricing.advanced.setupFee,
+
+            subscription:
+              subscriptionPricing.advanced.subscription
+          });
+
+      }
+    );
+
+
+    // =====================================================
+    // E2E-018-06
+    // ENTERPRISE + SOLE USER
+    // =====================================================
+
+    it(
+      'E2E-018-06 - Verify Enterprise subscription pricing and dynamic sales tax - Sole User',
+      () => {
+
+        // =================================================
+        // REGISTER TAX API
+        // =================================================
+
+        cy.intercept(
+          'POST',
+          '**/tax/v2/calculate-ephemeral-tax'
+        ).as('calculateTax');
+
+
+        // =================================================
+        // GET STARTED
+        // =================================================
+
+        GetStartedPage
+          .clickGetStartedBtn();
+
+        GetStartedPage
+          .clickFirstCheckbox();
+
+        GetStartedPage
+          .clickSecondCheckbox();
+
+        GetStartedPage
+          .clickNextButton();
+
+
+        // =================================================
+        // GENERATE RANDOM DATA
+        // =================================================
+
+        const organizationName =
+          generateRandomOrgName();
+
+        const website =
+          generateRandomWebsite();
+
+        const taxId =
+          generateRandomTaxId();
+
+        const address =
+          generateRandomAddress();
+
+        const city =
+          generateRandomCity();
+
+        const organizationEmail =
+          generateRandomEmail();
+
+        const randomState =
+          generateRandomState();
+
+        const randomZipCode =
+          generateZipCodeForState(
+            randomState
+          );
+
+        const randomIndustry =
+          generateRandomIndustry();
+
+
+        // =================================================
+        // LOG TEST DATA
+        // =================================================
+
+        cy.log(
+          `Organization: ${organizationName}`
+        );
+
+        cy.log(
+          `Formation State: ${randomState}`
+        );
+
+        cy.log(
+          `State: ${randomState}`
+        );
+
+        cy.log(
+          `ZIP Code: ${randomZipCode}`
+        );
+
+        cy.log(
+          `Industry: ${randomIndustry}`
+        );
+
+        cy.log(
+          `Organization Email: ${organizationEmail}`
+        );
+
+
+        // =================================================
+        // ORGANIZATION PROFILE
+        // =================================================
+
+        CreateorgProfile
+          .verifyPageLoaded();
+
+        CreateorgProfile
+          .enterOrgName(
+            organizationName
+          );
+
+        CreateorgProfile
+          .selectFormationStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .selectIndustryOption(
+            randomIndustry
+          );
+
+        CreateorgProfile
+          .enterWebsite(
+            website
+          );
+
+        CreateorgProfile
+          .enterTaxIdNumber(
+            taxId
+          );
+
+        CreateorgProfile
+          .enterOrgNameAddress(
+            address
+          );
+
+        CreateorgProfile
+          .enterCity(
+            city
+          );
+
+        CreateorgProfile
+          .selectStateOption(
+            randomState
+          );
+
+        CreateorgProfile
+          .enterPostalCode(
+            randomZipCode
+          );
+
+        CreateorgProfile
+          .enterOrgEmailAddress(
+            organizationEmail
+          );
+
+
+        // =================================================
+        // SOLE USER
+        // =================================================
+
+        CreateorgProfile
+          .clickSoleUserRadiobtn();
+
+        CreateorgProfile
+          .clickUserNextButton();
+
+
+        // =================================================
+        // PROMO CODE
+        // =================================================
+
+        PromocodePage
+          .clickContinuewithoutPromoBtn();
+
+
+        // =================================================
+        // SELECT ENTERPRISE
+        // =================================================
+
+        PaymentPage
+          .selectEnterpriseTier();
+
+
+        // =================================================
+        // SELECT REQUIRED CHECKBOXES
+        // =================================================
+
+        PaymentPage
+          .selectFirstCheckbox();
+
+        PaymentPage
+          .selectSecondCheckbox();
+
+
+        // =================================================
+        // VERIFY PRICING
+        // =================================================
 
         PaymentPage
           .verifyTierPricing({
