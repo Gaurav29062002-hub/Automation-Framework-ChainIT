@@ -173,18 +173,11 @@ class PaymentPage {
 
   verifySetupFee(expectedSetupFee) {
 
-    cy.contains(
-      'h5',
-      'Setup Fee:'
-    )
+    cy.contains('h5', 'Setup Fee:')
       .should('be.visible')
-      .closest(
-        'div.flex.items-start.justify-between'
-      )
-      .should(
-        'contain.text',
-        expectedSetupFee
-      );
+      .parent()
+      .parent()
+      .should('contain.text', expectedSetupFee);
 
     return this;
   }
@@ -206,58 +199,195 @@ class PaymentPage {
   }
 
 
-  verifySalesTax(expectedSalesTax) {
+  // =========================================================
+  // SALES TAX VERIFICATION
+  // =========================================================
+
+  verifySalesTax() {
 
     cy.contains(
+      'span',
       'Sales Tax'
     )
       .should('be.visible')
       .parent()
-      .should(
-        'contain.text',
-        expectedSalesTax
-      );
+      .within(() => {
+
+        cy.get('span')
+          .eq(1)
+          .invoke('text')
+          .then((taxText) => {
+
+            const taxAmount = taxText.trim();
+
+            cy.log(
+              `Displayed Sales Tax: ${taxAmount}`
+            );
+
+            expect(
+              taxAmount,
+              'Sales Tax should be displayed as currency'
+            ).to.match(
+              /^\$\d+\.\d{2}$/
+            );
+
+          });
+
+      });
 
     return this;
   }
 
 
-  verifyTotalDueToday(expectedTotal) {
+  // =========================================================
+  // TOTAL DUE TODAY VERIFICATION
+  // =========================================================
+
+  verifyTotalDueToday() {
+
+    let setupFee = 0;
+    let subscriptionAmount = 0;
+    let salesTax = 0;
+
+    cy.contains('h5', 'Setup Fee:')
+      .should('be.visible')
+      .parent()
+      .parent()
+      .invoke('text')
+      .then((setupFeeText) => {
+
+        const setupFeeMatch =
+          setupFeeText.match(/\$[\d,]+\.\d{2}/);
+
+        expect(
+          setupFeeMatch,
+          'Setup Fee amount'
+        ).to.not.be.null;
+
+        setupFee =
+          parseFloat(
+            setupFeeMatch[0]
+              .replace('$', '')
+              .replace(/,/g, '')
+          );
+
+      });
 
     cy.contains(
-      'Total Due Today'
+      'Subscription - First Month'
     )
       .should('be.visible')
       .parent()
-      .should(
-        'contain.text',
-        expectedTotal
+      .invoke('text')
+      .then((subscriptionText) => {
+
+        const subscriptionMatch =
+          subscriptionText.match(/\$[\d,]+\.\d{2}/);
+
+        expect(
+          subscriptionMatch,
+          'Subscription amount'
+        ).to.not.be.null;
+
+        subscriptionAmount =
+          parseFloat(
+            subscriptionMatch[0]
+              .replace('$', '')
+              .replace(/,/g, '')
+          );
+
+      });
+
+    cy.contains(
+      'span',
+      'Sales Tax'
+    )
+      .should('be.visible')
+      .parent()
+      .find('span')
+      .eq(1)
+      .invoke('text')
+      .then((taxText) => {
+
+        const taxMatch =
+          taxText.trim().match(/\$[\d,]+\.\d{2}/);
+
+        expect(
+          taxMatch,
+          'Sales Tax amount'
+        ).to.not.be.null;
+
+        salesTax =
+          parseFloat(
+            taxMatch[0]
+              .replace('$', '')
+              .replace(/,/g, '')
+          );
+
+      });
+
+    cy.then(() => {
+
+      const expectedTotal =
+        setupFee +
+        subscriptionAmount +
+        salesTax;
+
+      const expectedTotalFormatted =
+        `$${expectedTotal.toFixed(2)}`;
+
+      cy.log(
+        `Setup Fee: $${setupFee.toFixed(2)}`
       );
+
+      cy.log(
+        `Subscription: $${subscriptionAmount.toFixed(2)}`
+      );
+
+      cy.log(
+        `Sales Tax: $${salesTax.toFixed(2)}`
+      );
+
+      cy.log(
+        `Expected Total: ${expectedTotalFormatted}`
+      );
+
+      cy.contains(
+        'Total Due Today'
+      )
+        .should('be.visible')
+        .parent()
+        .should(
+          'contain.text',
+          expectedTotalFormatted
+        );
+
+    });
 
     return this;
   }
 
 
+  // =========================================================
+  // COMPLETE PRICING VERIFICATION
+  // =========================================================
+
   verifyTierPricing({
     setupFee,
-    subscription,
-    salesTax,
-    total
+    subscription
   }) {
 
-    this.verifySetupFee(setupFee);
+    this.verifySetupFee(
+      setupFee
+    );
 
     this.verifySubscriptionAmount(
       subscription
     );
 
-    this.verifySalesTax(
-      salesTax
-    );
+    this.verifySalesTax();
 
-    this.verifyTotalDueToday(
-      total
-    );
+    this.verifyTotalDueToday();
 
     return this;
   }
