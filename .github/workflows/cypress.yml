@@ -62,7 +62,7 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           install: false
-          command: npm run cypress:run
+          command: npm run cypress:run -- --record
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
