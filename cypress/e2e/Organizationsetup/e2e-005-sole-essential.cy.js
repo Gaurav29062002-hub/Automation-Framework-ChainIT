@@ -47,7 +47,7 @@ describe('Organization Setup - E2E Flow', () => {
 
 
     // =====================================================
-    // GENERATE RANDOM TEST DATA
+    // GENERATE RANDOM TEST DAT
     // =====================================================
 
     const organizationName =
@@ -106,7 +106,7 @@ describe('Organization Setup - E2E Flow', () => {
 
 
     // =====================================================
-    // ORGANIZATION PROFILE
+    // ORGANIZATION  PROFILE
     // =====================================================
 
     CreateorgProfile
